@@ -1,0 +1,8 @@
+Package: com.bench.autododge
+Name: AutoDodge
+Version: 1.0
+Architecture: iphoneos-arm64
+Description: Auto dodge for Brawl Stars
+Maintainer: bench
+Author: bench
+Section: Tweaks
