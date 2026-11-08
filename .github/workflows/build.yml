@@ -1,1 +1,33 @@
+name: Build AutoDodge dylib
 
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Theos
+        run: |
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Build dylib
+        run: |
+          export THEOS=${{ github.workspace }}/theos
+          export PATH=$THEOS/bin:$PATH
+          make -j$(sysctl -n hw.ncpu)
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Upload dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoDodge-dylib
+          path: .theos/obj/debug/AutoDodge.dylib
+          if-no-files-found: error
